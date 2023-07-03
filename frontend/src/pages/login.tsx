@@ -11,21 +11,27 @@ import {
   Heading,
   Input,
 } from "@chakra-ui/react";
+import Head from "next/head";
 import Link from "next/link";
 import React from "react";
 
 const Login = () => {
   return (
-    <Container padding={5}>
-      <Card>
-        <CardBody>
-          <Heading textAlign={"center"} color={"teal.600"}>
-            Login
-          </Heading>
-          <LoginForm />
-        </CardBody>
-      </Card>
-    </Container>
+    <>
+      <Head>
+        <title>Login</title>
+      </Head>
+      <Container padding={5}>
+        <Card>
+          <CardBody>
+            <Heading textAlign={"center"} color={"teal.600"}>
+              Login
+            </Heading>
+            <LoginForm />
+          </CardBody>
+        </Card>
+      </Container>
+    </>
   );
 };
 

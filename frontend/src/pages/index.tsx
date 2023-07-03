@@ -14,6 +14,8 @@ import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Order } from "./orders/[id]";
+import Head from "next/head";
+import axios from "axios";
 
 type HomeProps = {
   products: Product[];
@@ -31,17 +33,19 @@ export default function Home({ products, orders }: HomeProps) {
     setCartItems(cartItems);
   };
 
-  const onMyOrdersClick = () => {
+  const onMyOrdersClick = async () => {
     router.replace({ query: { tab: "1" } }, undefined, { shallow: true });
+    const orders = await OrdersService.getOrders(axios)
+    setMyOrders(orders);
   };
 
   const onProductsClick = () => {
     router.replace({ query: { tab: "0" } }, undefined, { shallow: true });
   };
-  
+
   const onSortOrder = (orders: Order[]) => {
     setMyOrders(orders);
-  }
+  };
 
   useEffect(() => {
     getInitialCartItems();
@@ -49,6 +53,9 @@ export default function Home({ products, orders }: HomeProps) {
 
   return (
     <>
+      <Head>
+        <title>Home</title>
+      </Head>
       <Tabs defaultIndex={Number(router.query.tab) || 0} colorScheme="teal">
         <TabList>
           <Tab onClick={onProductsClick}>All Products</Tab>

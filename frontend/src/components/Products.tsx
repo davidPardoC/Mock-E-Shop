@@ -10,11 +10,16 @@ import {
   Flex,
   FormControl,
   Input,
+  Select,
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
 import React, { FormEvent, FormEventHandler, useState } from "react";
 import ProductCard from "./ProductCard";
+import { ProductServices } from "@/services/products.services";
+import axios from "axios";
+import { set } from "react-hook-form";
+import { useGlobalStore } from "@/stores/globalStore";
 
 const Products = ({
   products = [],
@@ -27,8 +32,12 @@ const Products = ({
 }) => {
   const [myProducts, setProducts] = useState<Product[]>(products);
   const [search, setSearch] = useState("");
+  const { showError } = useGlobalStore();
 
-  const categories = [...new Set(products.map((product) => product.category))];
+  const categories = [
+    "All",
+    ...new Set(products.map((product) => product.category)),
+  ];
 
   const filterProductsByName = (name: string) => {
     let newProducts = [...products];
@@ -82,25 +91,47 @@ const Products = ({
     onSearch();
   };
 
+  const onSelectedCategory = async (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    try {
+      const products = await ProductServices.getProducts(
+        axios,
+        event.target.value
+      );
+      setProducts(products);
+    } catch (error: any) {
+      showError(error.message);
+    }
+  };
+
   return (
     <>
       <Container>
-        {!isCheckout && (
-          <Flex as={"form"} onSubmit={onSearchSubmit} mb={5} gap={2}>
-            <FormControl>
-              <Input
-                onChange={(e) => setSearch(e.target.value)}
-                value={search}
-                type="text"
-                placeholder="Search by Name, Price or Category"
-              />
-            </FormControl>
-            <Button onClick={onSearch} colorScheme="teal">
-              <Search2Icon />
-            </Button>
-          </Flex>
-        )}
-        <Flex></Flex>
+        <Flex as={"form"} onSubmit={onSearchSubmit} mb={5} gap={2}>
+          <FormControl>
+            <Input
+              onChange={(e) => setSearch(e.target.value)}
+              value={search}
+              type="text"
+              placeholder="Search by Name, Price or Category"
+            />
+          </FormControl>
+          <Button onClick={onSearch} colorScheme="teal">
+            <Search2Icon />
+          </Button>
+        </Flex>
+
+        <Flex gap={2} alignItems={"center"} mb={5}>
+          <Text>Categories:</Text>
+          <Select maxW={"80%"} onChange={onSelectedCategory}>
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </Select>
+        </Flex>
       </Container>
       {myProducts.length === 0 && (
         <Text textAlign={"center"}>No products where found</Text>

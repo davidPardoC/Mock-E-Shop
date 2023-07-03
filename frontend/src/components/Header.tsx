@@ -17,6 +17,7 @@ import CartItem from "./CartItem";
 import { useUserStore } from "@/stores/userStore";
 import { OrdersService } from "@/services/orders.services";
 import { useRouter } from "next/router";
+import { deleteCookie } from "cookies-next";
 
 const Header = () => {
   const { cartItems, clearCart } = useCartStore();
@@ -34,6 +35,12 @@ const Header = () => {
     router.push("/?tab=1");
   };
 
+  const onLogOut = () => {
+    deleteCookie("token");
+    deleteCookie("refreshToken");
+    window.location.reload();
+  }
+
   return (
     <>
       <Box bg={"teal"} color={"white"} p={3}>
@@ -49,7 +56,11 @@ const Header = () => {
             </li>
             <Flex gap={4}>
               <li>
-                <Link href={"/login"}>{user ? "Welcome" : "Login"}</Link>
+                {user ? (
+                  <Text onClick={onLogOut}>Log Out</Text>
+                ) : (
+                  <Link href={"/login"}>{"Login"}</Link>
+                )}
               </li>
               <Box
                 display={"flex"}
@@ -102,7 +113,9 @@ const Header = () => {
             {cartItems.length > 0 && (
               <Flex mt={3} justifyContent={"space-between"}>
                 <Button onClick={clearCart}>Empty Cart</Button>
-                <Button colorScheme="teal" onClick={onCheckout}>Checkout</Button>
+                <Button colorScheme="teal" onClick={onCheckout}>
+                  Checkout
+                </Button>
               </Flex>
             )}
           </DrawerBody>

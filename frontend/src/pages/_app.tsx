@@ -3,12 +3,10 @@ import ErrorAlert from "@/components/ErrorAlert";
 import Header from "@/components/Header";
 import { useGlobalStore } from "@/stores/globalStore";
 import { useUserStore } from "@/stores/userStore";
-import "@/styles/globals.css";
 import { setAuthHeader, setupClientSideAxios } from "@/utils/axios.utils";
 import { decodeToken, isClient } from "@/utils/common.utils";
 import { ChakraProvider } from "@chakra-ui/react";
 import { getCookie } from "cookies-next";
-import { get } from "http";
 import type { AppProps } from "next/app";
 import { useEffect } from "react";
 

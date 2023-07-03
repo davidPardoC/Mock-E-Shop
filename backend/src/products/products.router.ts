@@ -15,3 +15,16 @@ productsRouter.get(
     }
   }
 );
+
+productsRouter.get(
+  "/category/:category",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const category = req.params.category;
+      const products = await productsController.getProductsByCategory(category);
+      res.json(products);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
