@@ -38,7 +38,7 @@ const Header = () => {
   const onLogOut = () => {
     deleteCookie("token");
     deleteCookie("refreshToken");
-    window.location.reload();
+    window.location.replace("/");
   }
 
   return (
