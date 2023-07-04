@@ -31,13 +31,13 @@ cd ./backend
 docker-compose -f docker-compose.local.yml up -d
 ```
 
-Run backend
+Run backend development server
 
 ```bash
 npm run dev
 ```
 
-Run frontend
+Run frontend development server
 
 ```bash
 npm run dev
