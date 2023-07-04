@@ -19,7 +19,7 @@ Prerequisites:
 Just run:
 
 ```bash
-docker-compose run
+docker-compose up
 ```
 
 ### Local development
